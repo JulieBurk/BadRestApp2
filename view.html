@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bad Restaurant</title>
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Bad Restaurant</h1>
+      <hr>
+      <a href="/add"><button type="button" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-plus"></span> Add New Reservation</button></a>
+    </div>
+    <div class="row">
+
+      <div class="col-lg-12">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Reservation Search</strong></h3>
+          </div>
+          <div class="panel-body">
+            <input type="text" id="character-search" class="form-control">
+            <br>
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary btn-md" id="search-btn"><span class="glyphicon glyphicon-search"></span> Search Your Feelings Reservation</button>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Reservation</strong></h3>
+          </div>
+          <div class="panel-body">
+            <div class="well">
+              <h2 id="name">Reservation</h2>
+              <div id="stats">
+                <h3><strong>Name:</strong> <span id="role">Jones</span></h3>
+                <h3><strong>Time:</strong> <span id="age">9:00</span></h3>
+                <h3><strong>How Many people:</strong> <span id="force-points">4</span></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $("#search-btn").on("click", function() {
+      var searchedReservation = $("#reservation-search").val().trim();
+
+      searchedReservation = searchedReservation.replace(/\s+/g, "").toLowerCase();
+
+      $.get("/api/" + searchedReservation, function(data) {
+        console.log(data);
+        if (data) {
+          $("#reservation").show();
+          $("#name").text(data.name);
+          $("#time").text(data.time);
+          $("#numberOfPeople").text(data.numberOfPeople);
+        }
+        else {
+          $("#name").text("No reservation found!");
+          $("#reservation").hide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
